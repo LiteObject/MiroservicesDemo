@@ -14,6 +14,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="DTO\" />
+    <Folder Include="Handlers\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 
