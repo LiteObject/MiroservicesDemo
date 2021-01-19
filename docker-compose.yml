@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  MSSqlServer:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    # Adding container name to make sure connection string doesn't fails
+    container_name: "MSSqlServer"
+    # Adding port mapping, using 1433 as default
+    ports:
+     - "1433:1433"
+    environment:
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=My*Secure*Password*1
+  miroservicesdemo.order:
+    image: ${DOCKER_REGISTRY-}miroservicesdemoorder
+    environment:
+     - ASPNETCORE_URLS="http://+:5000"
+    build:
+      context: .
+      dockerfile: MiroservicesDemo.Order/Dockerfile
+    ports:
+     - "8080:80"
+    depends_on:
+     - MSSqlServer
+    command:
+     - "sleep 5;"
