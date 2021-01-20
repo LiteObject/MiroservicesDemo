@@ -30,7 +30,8 @@ namespace MiroservicesDemo
             services.AddControllers();
 
             var connectionString = Configuration.GetConnectionString("OrderSqlDb");
-
+            // var connectionString = Environment.GetEnvironmentVariable("ORDER_DB_CONNECTION_STRING");
+            Console.WriteLine($">>>>> {connectionString}");
             services.AddDbContext<OrderDbContext>(options => {
                 options.UseSqlServer(connectionString);
             });

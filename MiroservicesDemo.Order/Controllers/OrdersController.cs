@@ -56,6 +56,7 @@
             }
 
             await context.Orders.AddAsync(order);
+            await context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = order.Id }, order);
         }
     }

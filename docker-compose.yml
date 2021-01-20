@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
   MSSqlServer:
@@ -13,8 +13,11 @@ services:
      - SA_PASSWORD=My*Secure*Password*1
   miroservicesdemo.order:
     image: ${DOCKER_REGISTRY-}miroservicesdemoorder
+    container_name: "OrderApi"
     environment:
-     - ASPNETCORE_URLS="http://+:5000"
+     - ASPNETCORE_URLS="http://+:80"
+     - ASPNETCORE_ENVIRONMENT=Development
+     - ConnectionStrings__OrderSqlDb=Server=MSSqlServer;Database=OrderDb;User Id=SA;Password=My*Secure*Password*1;MultipleActiveResultSets=true
     build:
       context: .
       dockerfile: MiroservicesDemo.Order/Dockerfile
@@ -23,4 +26,5 @@ services:
     depends_on:
      - MSSqlServer
     command:
-     - "sleep 5;"
+    # Linux sleep command. Syntax: sleep number[suffix: s(default),m,h,d]. Example: sleep 0.05m
+     - "sleep 10;"
