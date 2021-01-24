@@ -30,7 +30,6 @@
     <Folder Include="Data\Contexts\" />
     <Folder Include="Data\Repositories\" />
     <Folder Include="DTO\" />
-    <Folder Include="Shared\" />
   </ItemGroup>
 
 

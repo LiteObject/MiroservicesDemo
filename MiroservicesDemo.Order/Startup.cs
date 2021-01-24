@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MiroservicesDemo.Order.Data;
+using MiroservicesDemo.Order.Shared;
 
 namespace MiroservicesDemo
 {
@@ -37,6 +38,7 @@ namespace MiroservicesDemo
             });
 
             services.AddSwaggerGen();
+            services.AddScoped<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

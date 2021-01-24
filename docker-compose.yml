@@ -1,16 +1,19 @@
 version: '3.9'
 
+# A service maps to a container
 services:
   MSSqlServer:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     # Adding container name to make sure connection string doesn't fails
     container_name: "MSSqlServer"
+    hostname: "MSSqlServer"
     # Adding port mapping, using 1433 as default
     ports:
      - "1433:1433"
     environment:
      - ACCEPT_EULA=Y
      - SA_PASSWORD=My*Secure*Password*1
+     - MSSQL_SA_PASSWORD=My*Secure*Password*1
   miroservicesdemo.order:
     image: ${DOCKER_REGISTRY-}miroservicesdemoorder
     container_name: "OrderApi"
@@ -18,6 +21,8 @@ services:
      - ASPNETCORE_URLS="http://+:80"
      - ASPNETCORE_ENVIRONMENT=Development
      - ConnectionStrings__OrderSqlDb=Server=MSSqlServer;Database=OrderDb;User Id=SA;Password=My*Secure*Password*1;MultipleActiveResultSets=true
+     - SMTP_HOST_NAME=mailhog
+     - SMTP_HOST_PORT=1025
     build:
       context: .
       dockerfile: MiroservicesDemo.Order/Dockerfile
@@ -25,6 +30,14 @@ services:
      - "8080:80"
     depends_on:
      - MSSqlServer
-    command:
+    # command: ["dotnet", "ef", "database update"]
     # Linux sleep command. Syntax: sleep number[suffix: s(default),m,h,d]. Example: sleep 0.05m
-     - "sleep 10;"
+    #- "sleep 10;"
+  mail:
+   image: mailhog/mailhog
+   container_name: "mailhog"
+   # Restarts all stopped and running services to reflect env var changes.
+   restart: always
+   ports:
+    - "1025:1025"
+    - "8025:8025" 
